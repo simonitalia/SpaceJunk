@@ -67,7 +67,7 @@ Some features included are not part of the guided project, but are added as stre
 
 - End game if user stops touching screen (suggested)
 
-- Add coniditonal Game Over Alert showing casue of Game Over and player sore (self imposed)
+- Add conditional Game Over Alert showing casue of Game Over and player sore (self imposed)
 
 - App icons (self imposed)
 
