@@ -30,6 +30,7 @@
 		2A77A3FE2218EB9D0090146B /* laserBeamGlow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A77A3FD2218EB9D0090146B /* laserBeamGlow.png */; };
 		2A77A4002218F5830090146B /* laserButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A77A3FF2218F5830090146B /* laserButton.png */; };
 		2A77A402221A3E8B0090146B /* explosionSound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2A77A401221A3E8B0090146B /* explosionSound.caf */; };
+		2A77A404221D0A9E0090146B /* gameOver.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A77A403221D0A9E0090146B /* gameOver.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		2A77A3FD2218EB9D0090146B /* laserBeamGlow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laserBeamGlow.png; sourceTree = "<group>"; };
 		2A77A3FF2218F5830090146B /* laserButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = laserButton.png; sourceTree = "<group>"; };
 		2A77A401221A3E8B0090146B /* explosionSound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = explosionSound.caf; path = Materials/explosionSound.caf; sourceTree = SOURCE_ROOT; };
+		2A77A403221D0A9E0090146B /* gameOver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameOver.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 				2A77A3EA2217C12F0090146B /* spaceShip.png */,
 				2A77A3EB2217C12F0090146B /* Starfield.sks */,
 				2A77A3EC2217C12F0090146B /* hammer@2x.png */,
+				2A77A403221D0A9E0090146B /* gameOver.png */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				2A77A3F02217C12F0090146B /* tv@2x.png in Resources */,
 				2A77A3F52217C12F0090146B /* hammer.png in Resources */,
 				2A77A3F82217C12F0090146B /* hammer@2x.png in Resources */,
+				2A77A404221D0A9E0090146B /* gameOver.png in Resources */,
 				2A77A3ED2217C12F0090146B /* tv.png in Resources */,
 				2A77A3D42217BA9C0090146B /* Main.storyboard in Resources */,
 				2A77A4002218F5830090146B /* laserButton.png in Resources */,

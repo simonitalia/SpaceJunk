@@ -15,8 +15,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Parent / Container child node properties
     var spaceShip: SKSpriteNode!
-    var laserButton: SKSpriteNode!
     var laserBeam = SKSpriteNode()
+    
+    var laserButton: SKSpriteNode!
+    var laserButtonLabel: SKLabelNode!
     
     var enemies = ["ball", "hammer", "tv"]
     var enemy = SKSpriteNode()
@@ -31,7 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     //Property for handling laserBeam sound
-    var isSpaceShipAlive = true
+//   var isSpaceShipAlive  true
     
     override func didMove(to view: SKView) {
         
@@ -83,13 +85,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         laserButton.zPosition = 0
         addChild(laserButton)
         
+        //Create laserButtonLabel
+        laserButtonLabel = SKLabelNode(fontNamed: "Chalkduster")
+        laserButtonLabel.color = UIColor.white
+        laserButtonLabel.fontSize = 12
+        laserButtonLabel.text = "PRESS ME"
+        laserButtonLabel.position = CGPoint(x: 0, y: 0)
+        laserButton.addChild(laserButtonLabel)
+        
     }
     
     //Configure firing of laserBeam triggered by touch of laserButton
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        //Check if spaceShip is alive
-        if !isSpaceShipAlive {
+        //Check game isn't over
+        if isGameOver {
             return
         
         } else {
@@ -137,7 +147,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     } //End touchesBegan()
     
-    
     //Determine where player touched and moves characterNode, position characterNode at touchedLocation
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -155,6 +164,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Move playerCharacter container node to touched location
         spaceShip.position = touchedLocation
+        
+    }
+    
+    //Detect if player stops touching spaceShip
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        guard let touch = touches.first else { return }
+        let touchLocation = touch.location(in: self)
+        let touchedNodes = nodes(at: touchLocation)
+        
+        for touchedNode in touchedNodes {
+            if touchedNode.name == "laserButton" {
+                return
+            }
+        }
+        
+        let explosion = SKEmitterNode(fileNamed: "explosion")!
+        explosion.position = spaceShip.position
+        spaceShip.removeFromParent()
+        addChild(explosion)
+        run(SKAction.playSoundFileNamed("explosionSound.caf", waitForCompletion: false))
+        
+        //Set isGameOver property to stop score from updating and silence laserBeam
+        isGameOver = true
+        
+        //Call gameOver
+        gameOver(triggeredByEnemy: false)
         
     }
     
@@ -181,7 +217,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy.physicsBody?.angularVelocity = 5
         enemy.physicsBody?.linearDamping = 0
         enemy.physicsBody?.angularDamping = 0
-        
     }
     
     //Remove enemy node from scene once it has moved off screen via update() method
@@ -200,7 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }//End update()
     
-    //playerCharacter node hit by enemy node, and enemy node hit by laserBeam handler
+    //Detect collisions between nodes
     func didBegin(_ contact: SKPhysicsContact) {
         
         guard let nodeA = contact.bodyA.node else {return}
@@ -244,17 +279,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         //Exit if both nodeAName and nodeBName is player
-        if nodeAName == "player" && nodeBName == "player" {
-            
-            return
-            
-        }
+        if nodeAName == "player" && nodeBName == "player" { return }
         
         //Exit if both nodeAName and nodeBName is enemy
-        if nodeAName == "enemy" && nodeBName == "enemy" {
-            
-            return
-        }
+        if nodeAName == "enemy" && nodeBName == "enemy" { return }
         
         //If either nodeNameA or nodeNameB is an enemy node
         if nodeAName == "enemy" || nodeBName == "enemy"{
@@ -276,16 +304,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         //expode enemy
                 }
                 
+                //Add bonus points to player score
+                score += 1000
+                
             } else if nodeA.name == "spaceShip" || nodeB.name == "spaceShip" {
                 
                 explosion.position = spaceShip.position
                 spaceShip.removeFromParent()
                 
-                //Silence laserBeam sound since spaceShip exploded
-                isSpaceShipAlive = false
-                
-                //Stop score from updating
+                //Stop score from updating and silcene laserBeam
                 isGameOver = true
+                
+                gameOver(triggeredByEnemy: true)
+                
             }
             
         //Add emitter explosion to scene and run explosion sound
@@ -295,5 +326,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } //End outer if block
 
     } //End didBegin() method
+    
+    //Handle gameOver actions
+    func gameOver(triggeredByEnemy: Bool) {
+        
+        //Ensure game has ended
+        if !isGameOver {
+            return
+        }
+        
+        //Stop all physicsWorld actions and player interactions
+        physicsWorld.speed = 0
+        isUserInteractionEnabled = false
+        
+        //Display Game Over image
+        let gameOverSprite = SKSpriteNode(imageNamed: "gameOver")
+        gameOverSprite.position = CGPoint(x: 512, y: 576)
+        gameOverSprite.zPosition = 1
+        addChild(gameOverSprite)
+        
+        //Confugure Game Over alert
+        var title: String
+        let message = "Your score: \(score)"
+        var alertController: UIAlertController
+        
+        //Game over triggered by enemy
+        if triggeredByEnemy == true {
+            
+            title = "Space Junk destroyed your Ship!"
+            
+        //Triggered by player stop touching screen
+        } else {
+            
+            title = "You destroyed your ship"
+            //Explode spaceShip node
+        }
+        
+        //Create alert
+        alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        //Display alert
+        self.view?.window?.rootViewController?.present(alertController, animated: true)
+    }
 }
-
