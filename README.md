@@ -57,7 +57,7 @@ This iOS app is developed as a guided project in the iBook tutorial "Hacking wit
 # Stretch goals
 Some features included are not part of the guided project, but are added as stretch goals. Stretch goals apply learned knowledge to accomplish and are completed unassisted. Stretch goals may either be suggested by the teaching instructor or self imposed. Strecth goals / features implemented (if any) will be listed here.
 
-- Add shooting laser beams to Space Ship to shoot and destroy enemies on contact (suggested)
+- Add laser beam to Space Ship to shoot and destroy enemies on contact (suggested)
 
 - Add sound effects to laser beam when activated (self imposed)
 
